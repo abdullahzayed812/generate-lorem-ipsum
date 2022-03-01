@@ -1,24 +1,53 @@
-import logo from './logo.svg';
+import React, {useState} from "react";
+import data from "./data";
 import './App.css';
 
 function App() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState([]);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let amount = parseInt(count);
+    if (amount <= 0) {
+      amount = 1;
+    } else if (amount > 8) {
+      amount = 8;
+    }
+    let displayedText = data.slice(0, amount);
+    setText(displayedText);
+  }
+  const handleChange = (e) => {
+    let inputValue = e.target.value;
+    setCount(inputValue);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="lorem-ipsum-container">
+      <h1 className="main-title">Tired of boring lorem ipsum</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="amount">
+          Paragraphs:
+        </label>
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          value={count}
+          onChange={handleChange}
+        />
+        <button type="submit">
+          Generate
+        </button>
+      </form>
+      <article className="lorem-container">
+        {text.map((item, index) => {
+          return (
+            <p key={index} className="lorem-text">{item}</p>
+          )
+        })}
+      </article>
+    </section>
   );
 }
 
